@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>djaw_re</Name>
     <RootNamespace>djaw_re</RootNamespace>
+    <InterpreterId>Global|ContinuumAnalytics|Anaconda36-64</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="carData.py" />
     <Compile Include="djaw_re.py" />
+    <Compile Include="file_transport.py" />
+    <Compile Include="setting.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda36-64" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
