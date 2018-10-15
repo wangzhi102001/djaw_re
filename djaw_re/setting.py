@@ -57,6 +57,10 @@ class setting():
         self.xpath25 = "//input[@id = 'IsKY_0']" #是否客运车辆 否 radio按钮
         self.xpath28 = "//div[@class = 'SysMsgMain']/div[2]" #添加完成后继续
         self.xpath27 = "//div[@class = 'SysMsgMain']/div" #添加完成后关闭
+
+        self.xpath201 = "//a[@id = 'btn_del']" #页面2删除按钮
+        self.xpath301 ="//a[@id = 'save']" #页面三保存按钮
+
         
 
 

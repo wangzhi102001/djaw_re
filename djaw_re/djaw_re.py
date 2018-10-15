@@ -210,21 +210,23 @@ for p1 in list_car:
             time.sleep(1)
             driver.find_element_by_xpath(my.xpathcxcp).clear() #清空查询车牌号
             if p1.hpzl =="拖拉机":
-                driver.find_element_by_xpath(my.xpathcxcp).send_keys(p1.carnumber[-5:]) #输入号牌
+                driver.find_element_by_xpath(my.xpathcxcp).send_keys(p1.carnumber[1:7]) #输入号牌
             else:
                 driver.find_element_by_xpath(my.xpathcxcp).send_keys(p1.carnumber) #输入号牌
             time.sleep(0.5)
             driver.find_element_by_xpath(my.xpathsl_btn).click()
             time.sleep(0.5)
+            driver.find_element_by_xpath("//select[@id='pageSize']").find_element_by_xpath("//option[@value='100']").click()
+            time.sleep(1)
             b_b =False
             try:
-                driver.find_element_by_xpath("//div[contains(text(),'暂无符合条件的列表数据')]")
+                driver.find_element_by_xpath("//td[(text()='%s')]" % p1.carnumber[:7])
                 b_b= True
             except :
                 b_b= False
-            if not(b_b) :
+            if b_b :
                 
-                driver.find_element_by_xpath("//td[contains(text(),'%s')]" % p1.carnumber).click()#点击后 进入二页面
+                driver.find_element_by_xpath("//td[(text()='%s')]" % p1.carnumber[:7]).click()#点击后 进入二页面
             else:
                 continue
 
@@ -234,29 +236,55 @@ for p1 in list_car:
             #    if handle !=main_windows:
             #        driver.switch_to_window(handle)#切换到非主窗口
 
-            driver.switch_to_window(all_handles[-1])# 切换到二页面
+            driver.switch_to_window(all_handles[-1])# 切换到最后一个页面
             #type_window = driver.current_window_handle
             time.sleep(2)
-            driver.find_element_by_xpath(my.xpathbtn_set).click() #点击2页面修改按钮
+            driver.find_element_by_xpath(my.xpath201).click() #点击2页面删除按钮
             time.sleep(1)
+
+            all_handles=driver.window_handles#标记所有窗口
+
+            #for handle in all_handles:
+            #    if handle !=main_windows:
+            #        driver.switch_to_window(handle)#切换到非主窗口
+
+            driver.switch_to_window(all_handles[-1])# 切换到最后一个页面
+            driver.find_element_by_xpath(my.xpath301).click()# 点击三页面保存
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+                            (By.XPATH, my.xpath19)))
+            driver.find_element_by_xpath(my.xpath18).click()
+            p1.show_edit()
+            driver.switch_to_window(main_windows)
             #暂无符合条件的列表数据！
-            ele = driver.find_element_by_xpath(my.xpath11)  
-            driver.execute_script("arguments[0].focus();",ele)
-            time.sleep(2)
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located(
-                            (By.XPATH, "//a[@attr_name = '%s']"% p1.location)))
-            driver.find_element_by_xpath("//a[@attr_name = '%s']"% p1.location).click()  # 点击获取行政区划
-            time.sleep(0.5)
-            driver.find_element_by_xpath(my.xpath20).click()#点击保存
-            
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located(
-                            (By.XPATH, my.xpath19)))     
+            #ele = driver.find_element_by_xpath(my.xpath11)  
+            #driver.execute_script("arguments[0].focus();",ele)
+            #time.sleep(2)
+            #WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+            #                (By.XPATH, "//a[@attr_name = '%s']"% p1.location)))
+            #driver.find_element_by_xpath("//a[@attr_name = '%s']"% p1.location).click()  # 点击获取行政区划
+            #time.sleep(0.5)
+            #driver.find_element_by_xpath(my.xpathHPHM).clear()
+            #driver.find_element_by_xpath(my.xpathHPHM).send_keys(p1.carnumber[-8:])
+            #driver.find_element_by_xpath(my.xpath16).click()  # 点击查重
+            #WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+            #                (By.XPATH, my.xpath19)))
+            #if '勿重复录入' in driver.find_element_by_xpath(my.xpath19).text:
+            #    driver.find_element_by_xpath(my.xpath18).click() #点击确定
+            #    p1.pass_state()
+            #    continue
+            #else:
+            #    driver.find_element_by_xpath(my.xpath18).click() #点击确定
             #time.sleep(1)
-            if '修改车辆成功' in driver.find_element_by_xpath(my.xpath19).text:
-                p1.show_edit()
-                driver.find_element_by_xpath(my.xpath18).click() #点击确定  
-                driver.close()
-                driver.switch_to_window(main_windows)
+            #driver.find_element_by_xpath(my.xpath20).click()#点击保存
+            
+            #WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+            #                (By.XPATH, my.xpath19)))     
+            ##time.sleep(1)
+            #if '修改车辆成功' in driver.find_element_by_xpath(my.xpath19).text:
+            #    p1.show_edit()
+            #    driver.find_element_by_xpath(my.xpath18).click() #点击确定  
+            #    driver.close()
+            #    driver.switch_to_window(main_windows)
         else :
             p1.pass_state()
     except TimeoutException as e:
